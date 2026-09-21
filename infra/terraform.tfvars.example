@@ -1,0 +1,6 @@
+project_name = "storeinsights"
+location     = "switzerlandnorth"
+environment  = "dev"
+
+# DO NOT put the password here — set it via an environment variable instead:
+#   export TF_VAR_sql_admin_password="YourStrongPassword123!"
