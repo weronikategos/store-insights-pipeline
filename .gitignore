@@ -1,0 +1,11 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+terraform.tfvars
+local.settings.json
+__pycache__/
+*.pyc
+dashboard/sample_sales.csv
+dashboard/dashboard_preview.html
+.venv/
