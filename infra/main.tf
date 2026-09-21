@@ -58,7 +58,7 @@ resource "azurerm_linux_function_app" "main" {
   }
 
   app_settings = {
-    "SQL_CONNECTION_STRING" = local.sql_connection_string
+    "SQL_CONNECTION_STRING"    = local.sql_connection_string
     "FUNCTIONS_WORKER_RUNTIME" = "python"
   }
 
@@ -67,13 +67,13 @@ resource "azurerm_linux_function_app" "main" {
 
 # --- Azure SQL: logical server + database (the Basic tier is enough for a demo/portfolio) ---
 resource "azurerm_mssql_server" "main" {
-  name                         = "sql-${local.name_prefix}"
-  resource_group_name         = azurerm_resource_group.main.name
-  location                    = azurerm_resource_group.main.location
-  version                     = "12.0"
-  administrator_login         = var.sql_admin_login
-  administrator_login_password = var.sql_admin_password
-  tags                        = local.tags
+  name                          = "sql-${local.name_prefix}"
+  resource_group_name           = azurerm_resource_group.main.name
+  location                      = azurerm_resource_group.main.location
+  version                       = "12.0"
+  administrator_login           = var.sql_admin_login
+  administrator_login_password  = var.sql_admin_password
+  tags                          = local.tags
 }
 
 resource "azurerm_mssql_database" "main" {
