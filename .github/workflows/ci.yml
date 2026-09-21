@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  terraform-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.5"
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+      - name: Terraform Init (bez backendu, tylko walidacja)
+        run: terraform init -backend=false
+      - name: Terraform Validate
+        run: terraform validate
+
+  python-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r function_app/requirements.txt flake8
+      - name: Lint
+        run: flake8 function_app --max-line-length=110
+
+  # Deploying to Azure requires secrets (AZURE_CREDENTIALS, the SQL connection
+  # string) configured in the repository settings — skipped in this demo.
+  # deploy:
+  #   needs: [terraform-check, python-check]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: azure/login@v2
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+  #     - run: terraform -chdir=infra apply -auto-approve
